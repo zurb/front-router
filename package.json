@@ -1,0 +1,31 @@
+{
+  "name": "gulp-front-router",
+  "version": "1.0.0",
+  "description": "Generate AngularJS states from Front Matter in state templates.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zurb/front-router"
+  },
+  "keywords": [
+    "foundation",
+    "angular"
+  ],
+  "author": "ZURB <foundation@zurb.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zurb/front-router/issues"
+  },
+  "homepage": "https://github.com/zurb/front-router",
+  "dependencies": {
+    "front-matter": "^1.0.0",
+    "gulp-util": "^3.0.4",
+    "through2": "^0.6.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11"
+  }
+}
