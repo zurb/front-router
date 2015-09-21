@@ -4,7 +4,7 @@
   "description": "Generate AngularJS states from Front Matter in state templates.",
   "main": "index.js",
   "scripts": {
-    "test": "gulp"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "through2": "^0.6.3"
   },
   "devDependencies": {
-    "gulp": "^3.8.11"
+    "mocha": "^2.3.3",
+    "vinyl-fs": "^1.0.0"
   }
 }
