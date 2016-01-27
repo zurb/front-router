@@ -44,17 +44,25 @@ module.exports = function(options) {
   }
 
   function endStream(cb) {
+    var lib, output;
+
     routes.sort(function(a, b) {
       return a.url < b.url;
     });
 
-    var content = "angular.module('foundation.dynamicRouting').config(" +
-      "['$FoundationStateProvider', function(FoundationStateProvider)" +
-      "{ FoundationStateProvider.registerDynamicRoutes(" + JSON.stringify(routes) + "); }]); \n";
+    // Load the output creator for the given framework
+    try {
+      lib = require('./lib/' + options.mode);
+    }
+    catch (e) {
+      cb(new PluginError('Front Router', 'No support for ' + options.mode + '.'));
+    }
+
+    output = lib(routes);
 
     // Create file with routes
-    fs.writeFile(options.path, content, function(err) {
-      if(err) throw err;
+    fs.writeFile(options.path, output, function(err) {
+      if (err) throw err;
       cb();
     });
   }
