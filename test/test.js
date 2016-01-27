@@ -10,7 +10,8 @@ describe('Front Router', function(done) {
     vfs.src(SOURCES)
       .pipe(fr({
         path: OUTPUT,
-        root: './test/fixtures'
+        root: './test/fixtures',
+        angular: true
       }))
       .on('finish', done);
   });
