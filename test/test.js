@@ -13,6 +13,7 @@ describe('Front Router', function(done) {
         root: './test/fixtures',
         mode: 'angular'
       }))
+      .pipe(vfs.dest('./test/build'))
       .on('finish', done);
   });
 });

@@ -22,7 +22,9 @@ module.exports = function(options) {
     fr = new FrontRouter(options);
   }
 
-  return through.obj(fr.addRoute.bind(fr), function(cb) {
+  return through.obj(function(file, enc, cb) {
+    fr.addRoute(file, cb);
+  }, function(cb) {
     fr.writeRoutes.call(fr, cb);
   });
 };
