@@ -1,71 +1,30 @@
-var through     = require('through2');
-var gutil       = require('gulp-util');
-var fm          = require('front-matter');
-var PluginError = gutil.PluginError;
-var path        = require('path');
-var fs          = require('fs');
-var extend      = require('util')._extend;
+var through = require('through2');
+var extend  = require('util')._extend;
+var path    = require('path');
 
-module.exports = function(options) {
-  var routes = [];
+var fr;
 
-  options = extend({
+function FrontRouter(options) {
+  this.options = extend({
     dir: process.cwd(),
     output: path.join(process.cwd(), 'routes.js'),
     mode: 'angular'
   }, options);
 
-  function bufferContents(file, enc, cb) {
-    var config;
-    var content;
+  this.routes = [];
+}
 
-    if (file.isNull()) {
-      cb(null, file);
-    }
+FrontRouter.prototype.addRoute = require('./lib/addRoute');
+FrontRouter.prototype.writeRoutes = require('./lib/writeRoutes');
 
-    if (file.isBuffer()) {
-      try {
-        content = fm(file.contents.toString());
-      }
-      catch (e) {
-        return cb(new PluginError('Front Router', e));
-      }
-
-      if (content.attributes.name) {
-        file.contents = new Buffer(content.body);
-        config = content.attributes;
-        var relativePath = path.relative(options.dir + path.sep + options.root, file.path);
-        config.path = relativePath.split(path.sep).join('/');
-        routes.push(config);
-      }
-    }
-
-    cb(null, file);
+module.exports = function(options) {
+  if (typeof fr === 'undefined') {
+    fr = new FrontRouter(options);
   }
 
-  function endStream(cb) {
-    var lib, output;
-
-    routes.sort(function(a, b) {
-      return a.url < b.url;
-    });
-
-    // Load the output creator for the given framework
-    try {
-      lib = require('./lib/' + options.mode);
-    }
-    catch (e) {
-      cb(new PluginError('Front Router', 'No support for ' + options.mode + '.'));
-    }
-
-    output = lib(routes);
-
-    // Create file with routes
-    fs.writeFile(options.path, output, function(err) {
-      if (err) throw err;
-      cb();
-    });
-  }
-
-  return through.obj(bufferContents, endStream);
+  return through.obj(fr.addRoute.bind(fr), function(cb) {
+    fr.writeRoutes.call(fr, cb);
+  });
 };
+
+module.exports.FrontRouter = FrontRouter;
