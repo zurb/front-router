@@ -11,7 +11,7 @@ describe('Front Router', function(done) {
       .pipe(fr({
         path: OUTPUT,
         root: './test/fixtures',
-        angular: true
+        mode: 'angular'
       }))
       .on('finish', done);
   });
