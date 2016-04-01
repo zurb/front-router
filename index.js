@@ -4,6 +4,14 @@ var path    = require('path');
 
 var fr;
 
+/**
+ * Creates a new instance of Front Router.
+ * @class
+ * @param {object} options - Configuration options.
+ * @param {string} options.dir - Base path of all pages being used in routes.
+ * @param {string} options.output - Output file with route definitions.
+ * @param {string} options.mode - Framework to use. Can be `angular` or `angular2`.
+ */
 function FrontRouter(options) {
   this.options = extend({
     dir: process.cwd(),
@@ -17,6 +25,11 @@ function FrontRouter(options) {
 FrontRouter.prototype.addRoute = require('./lib/addRoute');
 FrontRouter.prototype.writeRoutes = require('./lib/writeRoutes');
 
+/**
+ * Process a series of pages into routes.
+ * @param {object} options - Config options to pass to the `FrontRouter` class.
+ * @returns {function} Transform stream.
+ */
 module.exports = function(options) {
   if (typeof fr === 'undefined') {
     fr = new FrontRouter(options);
